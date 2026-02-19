@@ -26,16 +26,15 @@ RUN sudo apt-get install -y \
 #Project Specific Liberies/Extra Packages
     usbutils \
     libserial-dev \
-    libi2c-dev \
-
-
+    libi2c-dev
 # Install essential packages
 RUN sudo apt-get install -y wget
 
 # Add sourcing ROS setup.bash to .bashrc
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
-COPY ./code /code
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+RUN git clone https://github.com/TheHacker3256/Ros2_Omnicar.git /code 
 COPY ./entrypoint.sh /entrypoint.sh
 RUN source /opt/ros/humble/setup.bash && cd /code && colcon build --symlink-install
 RUN chmod +x /entrypoint.sh
